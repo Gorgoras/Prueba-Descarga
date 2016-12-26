@@ -13,6 +13,10 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Download;
 using System.Threading;
 using Google.Apis.Util.Store;
+using Google.Apis.Services;
+using System.Collections;
+using Google.Apis.Drive.v3.Data;
+using Prueba_Descarga.Helpers;
 
 namespace Prueba_Descarga
 {
@@ -22,58 +26,31 @@ namespace Prueba_Descarga
         private string usuario;
         private string pass;
         private UserCredential userGoogle;
-       
+        private GoogleHelper google;
+        private MicrosoftHelper microsft;
 
         public Form1()
         {
             InitializeComponent();
+            google = new GoogleHelper();
+            microsft = new MicrosoftHelper();
         }
 
         private void btnDescargar_Click(object sender, EventArgs e)
         {
-            linkDocumento = txtLink.Text;
-            usuario = txtUsuario.Text;
-            pass = txtPass.Text;
-
-            if (radioMicrosoft.Checked)
-            {
-                descargarMicrosoftOneDrive();
-            }
-
-            if (radioGoogle.Checked)
-            {
-                descargarGoogleDrive(linkDocumento, userGoogle);
-            }
-
+           
         }
 
-        private UserCredential loginToGoogleDriveAPI(string usuario)
-        {
-            //Scopes for use with the Google Drive API
-            string[] scopes = new string[] { DriveService.Scope.Drive,
-                                 DriveService.Scope.DriveFile};
-            var clientId = "958470112648-f26et699num6vs6ma1d7iha8gjpofngl.apps.googleusercontent.com";      // From https://console.developers.google.com
-            var clientSecret = "cTq0zQ309fG_6O5MU-eSJKl9";          // From https://console.developers.google.com
-                                               // here is where we Request the user to give us access, or use the Refresh Token that was previously stored in %AppData%
-            var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
-            {
-                ClientId = clientId,
-                ClientSecret = clientSecret
-            },
-            scopes,
-            Environment.UserName,
-            CancellationToken.None,
-            new FileDataStore("Daimto.GoogleDrive.Auth.Store")).Result;
-            return credential;
-        }
+      
 
         private async void descargarGoogleDrive(string link, UserCredential user)
         {
+            BaseClientService.Initializer init = new BaseClientService.Initializer();
+            init.ApplicationName = "Prueba Descarga";
+            init.HttpClientInitializer = userGoogle;
+            DriveService service = new DriveService(init);
 
-            DriveService service = new DriveService();
 
-
-            link = "https://www.googleapis.com/drive/v3/files";
             var stream = new System.IO.MemoryStream();
             var request = service.Files.Get(link);
             var fileStream = System.IO.File.Create("E:\\Pruebas\\test");
@@ -102,6 +79,7 @@ namespace Prueba_Descarga
             await request.DownloadAsync(stream);
             stream.CopyTo(System.IO.File.Create("E:\\Pruebas\\test"));
         }
+
         private void descargarMicrosoftOneDrive()
         {
 
@@ -109,17 +87,30 @@ namespace Prueba_Descarga
 
         private void button1_Click(object sender, EventArgs e)
         {
-            userGoogle = loginToGoogleDriveAPI(usuario);
+            String usuario = txtUsuario.Text;
+            userGoogle = google.loginToGoogleDriveAPI(usuario);
             if(userGoogle != null)
             {
                 lblLoginSuccess.Text = "Exito!";
                 lblLoginSuccess.ForeColor = Color.Green;
+                btnList.Enabled = true;
             }
             else
             {
                 lblLoginSuccess.Text = "Fracaso =(";
                 lblLoginSuccess.ForeColor = Color.Red;
             }
+        }
+
+        private void btnList_Click(object sender, EventArgs e)
+        {
+            google.GetFiles(userGoogle);
+        }
+
+     
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
         }
     }
 }

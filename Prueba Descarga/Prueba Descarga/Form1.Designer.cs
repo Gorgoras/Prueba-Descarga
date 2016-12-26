@@ -40,7 +40,10 @@
             this.btnDescargar = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lblLoginSuccess = new System.Windows.Forms.Label();
+            this.dgvFiles = new System.Windows.Forms.DataGridView();
+            this.btnList = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -125,11 +128,12 @@
             // 
             // btnDescargar
             // 
-            this.btnDescargar.Location = new System.Drawing.Point(89, 235);
+            this.btnDescargar.Enabled = false;
+            this.btnDescargar.Location = new System.Drawing.Point(89, 253);
             this.btnDescargar.Name = "btnDescargar";
             this.btnDescargar.Size = new System.Drawing.Size(198, 26);
             this.btnDescargar.TabIndex = 9;
-            this.btnDescargar.Text = "Descargar";
+            this.btnDescargar.Text = "Download";
             this.btnDescargar.UseVisualStyleBackColor = true;
             this.btnDescargar.Click += new System.EventHandler(this.btnDescargar_Click);
             // 
@@ -151,11 +155,32 @@
             this.lblLoginSuccess.Size = new System.Drawing.Size(0, 13);
             this.lblLoginSuccess.TabIndex = 11;
             // 
+            // dgvFiles
+            // 
+            this.dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFiles.Location = new System.Drawing.Point(368, 123);
+            this.dgvFiles.Name = "dgvFiles";
+            this.dgvFiles.Size = new System.Drawing.Size(389, 220);
+            this.dgvFiles.TabIndex = 12;
+            // 
+            // btnList
+            // 
+            this.btnList.Enabled = false;
+            this.btnList.Location = new System.Drawing.Point(89, 224);
+            this.btnList.Name = "btnList";
+            this.btnList.Size = new System.Drawing.Size(198, 23);
+            this.btnList.TabIndex = 13;
+            this.btnList.Text = "Get list of files";
+            this.btnList.UseVisualStyleBackColor = true;
+            this.btnList.Click += new System.EventHandler(this.btnList_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 424);
+            this.Controls.Add(this.btnList);
+            this.Controls.Add(this.dgvFiles);
             this.Controls.Add(this.lblLoginSuccess);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnDescargar);
@@ -168,8 +193,10 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,6 +216,8 @@
         private System.Windows.Forms.Button btnDescargar;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblLoginSuccess;
+        private System.Windows.Forms.DataGridView dgvFiles;
+        private System.Windows.Forms.Button btnList;
     }
 }
 
