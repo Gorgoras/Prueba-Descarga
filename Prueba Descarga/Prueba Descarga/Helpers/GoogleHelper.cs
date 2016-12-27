@@ -1,14 +1,13 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using Google;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Download;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +15,6 @@ namespace Prueba_Descarga.Helpers
 {
     class GoogleHelper
     {
-
         public UserCredential loginToGoogleDriveAPI(string usuario)
         {
             //Scopes for use with the Google Drive API
@@ -91,23 +89,37 @@ namespace Prueba_Descarga.Helpers
             return Files;
         }
 
-        public string downloadFile(string fileId, string fileName, UserCredential userGoogle)
+        public async Task<string> downloadFile(string fileId, string fileName, UserCredential userGoogle)
         {
             BaseClientService.Initializer init = new BaseClientService.Initializer();
             init.ApplicationName = "Prueba Descarga";
             init.HttpClientInitializer = userGoogle;
             DriveService service = new DriveService(init);
+            string respuesta = "";
 
             try
             {
-                File file = service.Files.Get(fileId).Execute();
-                bool stop = true;
-            }
-            catch
-            {
+                PermissionList pList = service.Permissions.List(fileId).Execute();
 
+                Permission perm = service.Permissions.Get(fileId, pList.Permissions[0].Id).Execute();
+
+                var fileStream = System.IO.File.Create("C:\\Pruebas\\" + fileName);
+
+
+                await service.Files.Get(fileId).DownloadAsync(fileStream);
+
+                respuesta = "Completo";
+                fileStream.Dispose();
+                fileStream.Close();
             }
-            return "";
+            catch  (GoogleApiException e) {
+                respuesta = e.Message.ToString();
+
+                if (e.Error.Code == 403) respuesta = "No tiene permisos suficientes";
+             
+            }
+
+            return respuesta;
 
 
 

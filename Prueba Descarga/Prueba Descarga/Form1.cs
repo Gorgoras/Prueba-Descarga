@@ -22,9 +22,6 @@ namespace Prueba_Descarga
 {
     public partial class Form1 : Form
     {
-        private string linkDocumento;
-        private string usuario;
-        private string pass;
         private UserCredential userGoogle;
         private GoogleHelper google;
         private MicrosoftHelper microsoft;
@@ -38,7 +35,7 @@ namespace Prueba_Descarga
 
 
 
-        private void btnDescargar_Click(object sender, EventArgs e)
+        private async void btnDescargar_Click(object sender, EventArgs e)
         {
             lblDownloadStatus.Text = "Downloading...";
 
@@ -47,7 +44,7 @@ namespace Prueba_Descarga
             string fileId = dgvFiles.Rows[nroFila].Cells[1].Value.ToString();
             string fileName = dgvFiles.Rows[nroFila].Cells[0].Value.ToString();
 
-            lblDownloadStatus.Text = google.downloadFile(fileId, fileName, userGoogle);
+            lblDownloadStatus.Text = await google.downloadFile(fileId, fileName, userGoogle);
         }
 
 
