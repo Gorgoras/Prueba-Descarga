@@ -40,7 +40,14 @@ namespace Prueba_Descarga
 
         private void btnDescargar_Click(object sender, EventArgs e)
         {
-            google.downloadFile();
+            lblDownloadStatus.Text = "Downloading...";
+
+            //dgvFiles
+            int nroFila = Int32.Parse(dgvFiles.SelectedRows[0].Index.ToString());
+            string fileId = dgvFiles.Rows[nroFila].Cells[1].Value.ToString();
+            string fileName = dgvFiles.Rows[nroFila].Cells[0].Value.ToString();
+
+            lblDownloadStatus.Text = google.downloadFile(fileId, fileName, userGoogle);
         }
 
 
@@ -118,6 +125,8 @@ namespace Prueba_Descarga
             if (radioGoogle.Checked)
             {
                 dgvFiles.AutoGenerateColumns = false;
+                dgvFiles.MultiSelect = false;
+                dgvFiles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
                 //Creo las columnas a mostrar
                 dgvFiles.Columns.Add("Name", "Name");

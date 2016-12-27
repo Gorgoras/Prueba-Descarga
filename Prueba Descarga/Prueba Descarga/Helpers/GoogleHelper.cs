@@ -1,4 +1,5 @@
 ﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Download;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
@@ -32,7 +33,7 @@ namespace Prueba_Descarga.Helpers
             scopes,
             usuario,
             CancellationToken.None,
-            new FileDataStore("Daimto.GoogleDrive.Auth.Store")).Result;
+            new FileDataStore("PruebaDescarga.GoogleDrive.Auth.Store")).Result;
             //con esto guarda los tokens en %AppData% pero no es recomendable para una aplicacion web
             return credential;
             //Environment.UserName
@@ -90,9 +91,63 @@ namespace Prueba_Descarga.Helpers
             return Files;
         }
 
-        public void downloadFile()
+        public string downloadFile(string fileId, string fileName, UserCredential userGoogle)
         {
+            BaseClientService.Initializer init = new BaseClientService.Initializer();
+            init.ApplicationName = "Prueba Descarga";
+            init.HttpClientInitializer = userGoogle;
+            DriveService service = new DriveService(init);
 
+            try
+            {
+                File file = service.Files.Get(fileId).Execute();
+                bool stop = true;
+            }
+            catch
+            {
+
+            }
+            return "";
+
+
+
+            // ESTO PROBABLEMENTE NO SIRVA 
+            //
+            // string respuesta="";
+            // BaseClientService.Initializer init = new BaseClientService.Initializer();
+            // init.ApplicationName = "Prueba Descarga";
+            // init.HttpClientInitializer = userGoogle;
+            // DriveService service = new DriveService(init);
+
+
+            // var stream = new System.IO.MemoryStream();
+            // var request = service.Files.Get(fileId);
+            // var fileStream = System.IO.File.Create("C:\\Pruebas\\" + fileName);
+            // request.MediaDownloader.ProgressChanged +=
+            // (IDownloadProgress progress) =>
+            // {
+            //     switch (progress.Status)
+            //     {
+            //         case DownloadStatus.Downloading:
+            //             {
+            //                 Console.WriteLine(progress.BytesDownloaded);
+            //                 break;
+            //             }
+            //         case DownloadStatus.Completed:
+            //             {
+            //                 respuesta = "Download complete.";
+            //                 break;
+            //             }
+            //         case DownloadStatus.Failed:
+            //             {
+            //                 respuesta = "Download failed.";
+            //                 break;
+            //             }
+            //     }
+            // };
+            // request.DownloadAsync(stream);
+            // return respuesta;
+            //// stream.CopyTo(System.IO.File.Create("C:\\Pruebas\\test"));
         }
     }
    

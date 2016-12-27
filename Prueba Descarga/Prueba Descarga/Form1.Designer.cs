@@ -40,6 +40,7 @@
             this.lblLoginSuccess = new System.Windows.Forms.Label();
             this.dgvFiles = new System.Windows.Forms.DataGridView();
             this.btnList = new System.Windows.Forms.Button();
+            this.lblDownloadStatus = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).BeginInit();
             this.SuspendLayout();
@@ -156,11 +157,20 @@
             this.btnList.UseVisualStyleBackColor = true;
             this.btnList.Click += new System.EventHandler(this.btnList_Click);
             // 
+            // lblDownloadStatus
+            // 
+            this.lblDownloadStatus.AutoSize = true;
+            this.lblDownloadStatus.Location = new System.Drawing.Point(107, 297);
+            this.lblDownloadStatus.Name = "lblDownloadStatus";
+            this.lblDownloadStatus.Size = new System.Drawing.Size(0, 13);
+            this.lblDownloadStatus.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1104, 552);
+            this.Controls.Add(this.lblDownloadStatus);
             this.Controls.Add(this.btnList);
             this.Controls.Add(this.dgvFiles);
             this.Controls.Add(this.lblLoginSuccess);
@@ -196,6 +206,7 @@
         private System.Windows.Forms.Label lblLoginSuccess;
         private System.Windows.Forms.DataGridView dgvFiles;
         private System.Windows.Forms.Button btnList;
+        private System.Windows.Forms.Label lblDownloadStatus;
     }
 }
 
