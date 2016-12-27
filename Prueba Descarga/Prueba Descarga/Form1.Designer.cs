@@ -47,7 +47,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(89, 94);
+            this.label1.Location = new System.Drawing.Point(278, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 13);
             this.label1.TabIndex = 0;
@@ -56,7 +56,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(89, 123);
+            this.label3.Location = new System.Drawing.Point(278, 15);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 2;
@@ -64,17 +64,18 @@
             // 
             // txtLink
             // 
-            this.txtLink.Location = new System.Drawing.Point(179, 94);
+            this.txtLink.Location = new System.Drawing.Point(368, 38);
             this.txtLink.Name = "txtLink";
             this.txtLink.Size = new System.Drawing.Size(355, 20);
             this.txtLink.TabIndex = 3;
             // 
             // txtUsuario
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(179, 120);
+            this.txtUsuario.Location = new System.Drawing.Point(368, 12);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(100, 20);
             this.txtUsuario.TabIndex = 5;
+            this.txtUsuario.Text = "martinzurita1";
             // 
             // radioMicrosoft
             // 
@@ -83,13 +84,13 @@
             this.radioMicrosoft.Name = "radioMicrosoft";
             this.radioMicrosoft.Size = new System.Drawing.Size(73, 17);
             this.radioMicrosoft.TabIndex = 6;
-            this.radioMicrosoft.TabStop = true;
             this.radioMicrosoft.Text = "One Drive";
             this.radioMicrosoft.UseVisualStyleBackColor = true;
             // 
             // radioGoogle
             // 
             this.radioGoogle.AutoSize = true;
+            this.radioGoogle.Checked = true;
             this.radioGoogle.Location = new System.Drawing.Point(9, 48);
             this.radioGoogle.Name = "radioGoogle";
             this.radioGoogle.Size = new System.Drawing.Size(87, 17);
@@ -139,9 +140,9 @@
             // dgvFiles
             // 
             this.dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFiles.Location = new System.Drawing.Point(368, 123);
+            this.dgvFiles.Location = new System.Drawing.Point(368, 79);
             this.dgvFiles.Name = "dgvFiles";
-            this.dgvFiles.Size = new System.Drawing.Size(389, 220);
+            this.dgvFiles.Size = new System.Drawing.Size(724, 461);
             this.dgvFiles.TabIndex = 12;
             // 
             // btnList
@@ -159,7 +160,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 424);
+            this.ClientSize = new System.Drawing.Size(1104, 552);
             this.Controls.Add(this.btnList);
             this.Controls.Add(this.dgvFiles);
             this.Controls.Add(this.lblLoginSuccess);

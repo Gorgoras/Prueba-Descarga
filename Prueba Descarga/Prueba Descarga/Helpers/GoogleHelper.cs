@@ -38,39 +38,48 @@ namespace Prueba_Descarga.Helpers
             //Environment.UserName
         }
 
-        public IList GetFiles(UserCredential userCred)
+        public List<File> GetFiles(UserCredential userCred)
         {
             BaseClientService.Initializer init = new BaseClientService.Initializer();
             init.ApplicationName = "Prueba Descarga";
             init.HttpClientInitializer = userCred;
             DriveService service = new DriveService(init);
 
-            IList Files = new List<File>();
+            List<File> Files = new List<File>();
 
             try
             {
-                //List all of the files and directories for the current user.  
-                // Documentation: https://developers.google.com/drive/v2/reference/files/list
+                //Trae todos los archivos y carpetas del usuario, organizado en varias paginas.
                 FilesResource.ListRequest list = service.Files.List();
 
-                FileList filesFeed = list.Execute(); //trae 100 archivos
+                FileList filesFeed = list.Execute(); //trae 100 archivos (el tamaño estandar de una pagina de archivos)
                 File archivoActual;
 
 
                 while (filesFeed != null)
                 {
-                    for (int i = 0; i < filesFeed.Files.Count; i++)
+                    for (int i = 0; i < filesFeed.Files.Count; i++) //paso cada archivo a la lista
                     {
                         archivoActual = filesFeed.Files.ElementAt<File>(i);
                         Files.Add(archivoActual);
 
                     }
-                    if (filesFeed.NextPageToken == null)
+
+                    /*  Para acelerar la carga de los archivos, voy a trabajar con los 100 primeros
+                     *  nada mas, descomentar lo que esta abajo y eliminar el break al final para 
+                     *  traer todos los archivos. 
+                     * 
+                     * 
+                    if (filesFeed.NextPageToken == null) //si ya no hay mas paginas siguientes, corto el while
                     {
                         break;
                     }
-                    list.PageToken = filesFeed.NextPageToken;
-                    filesFeed = list.Execute();
+
+
+                    list.PageToken = filesFeed.NextPageToken; //cambiamos el page token a la pagina que sigue
+                    filesFeed = list.Execute(); //trae los archivos que estan en la pagina indicada anteriormente
+                    */
+                    break;
                 }
             }
             catch (Exception ex)
@@ -79,6 +88,11 @@ namespace Prueba_Descarga.Helpers
                 Console.WriteLine(ex.Message);
             }
             return Files;
+        }
+
+        public void downloadFile()
+        {
+
         }
     }
    

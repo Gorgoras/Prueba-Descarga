@@ -27,21 +27,23 @@ namespace Prueba_Descarga
         private string pass;
         private UserCredential userGoogle;
         private GoogleHelper google;
-        private MicrosoftHelper microsft;
+        private MicrosoftHelper microsoft;
 
         public Form1()
         {
             InitializeComponent();
             google = new GoogleHelper();
-            microsft = new MicrosoftHelper();
+            microsoft = new MicrosoftHelper();
         }
+
+
 
         private void btnDescargar_Click(object sender, EventArgs e)
         {
-           
+            google.downloadFile();
         }
 
-      
+
 
         private async void descargarGoogleDrive(string link, UserCredential user)
         {
@@ -87,27 +89,61 @@ namespace Prueba_Descarga
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String usuario = txtUsuario.Text;
-            userGoogle = google.loginToGoogleDriveAPI(usuario);
-            if(userGoogle != null)
+            string usuario = txtUsuario.Text;
+            if (radioGoogle.Checked)
             {
-                lblLoginSuccess.Text = "Exito!";
-                lblLoginSuccess.ForeColor = Color.Green;
-                btnList.Enabled = true;
+                userGoogle = google.loginToGoogleDriveAPI(usuario);
+                if (userGoogle != null)
+                {
+                    lblLoginSuccess.Text = "Exito!";
+                    lblLoginSuccess.ForeColor = Color.Green;
+                    btnList.Enabled = true;
+                    radioGoogle.Enabled = false;
+                    radioMicrosoft.Enabled = false;
+                }
+                else
+                {
+                    lblLoginSuccess.Text = "Fracaso =(";
+                    lblLoginSuccess.ForeColor = Color.Red;
+                }
             }
             else
             {
-                lblLoginSuccess.Text = "Fracaso =(";
-                lblLoginSuccess.ForeColor = Color.Red;
+                //logica para One Drive
             }
         }
 
         private void btnList_Click(object sender, EventArgs e)
         {
-            google.GetFiles(userGoogle);
+            if (radioGoogle.Checked)
+            {
+                dgvFiles.AutoGenerateColumns = false;
+
+                //Creo las columnas a mostrar
+                dgvFiles.Columns.Add("Name", "Name");
+                dgvFiles.Columns.Add("Id", "Id");
+                dgvFiles.Columns.Add("Kind", "Kind");
+                dgvFiles.Columns.Add("MimeType", "MimeType");
+           
+                List<File> listaArchivos = google.GetFiles(userGoogle);
+                File archivoActual;
+                string[] fila;
+                
+                //Cargo las filas
+                for(int i = 0; i < listaArchivos.Count; i++)
+                {
+                    archivoActual = listaArchivos.ElementAt(i);
+                    fila = new string[] { archivoActual.Name, archivoActual.Id, archivoActual.Kind, archivoActual.MimeType };
+                    dgvFiles.Rows.Add(fila);
+                }
+
+                //Habilito boton descargar para que se pueda seleccionar un archivo de la lista y descargarlo
+                btnDescargar.Enabled = true;
+                
+            }
         }
 
-     
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
