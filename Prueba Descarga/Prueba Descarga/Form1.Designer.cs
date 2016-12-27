@@ -29,10 +29,8 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtLink = new System.Windows.Forms.TextBox();
-            this.txtPass = new System.Windows.Forms.TextBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.radioMicrosoft = new System.Windows.Forms.RadioButton();
             this.radioGoogle = new System.Windows.Forms.RadioButton();
@@ -55,15 +53,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Link documento";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(89, 146);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(61, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Contraseña";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -79,14 +68,6 @@
             this.txtLink.Name = "txtLink";
             this.txtLink.Size = new System.Drawing.Size(355, 20);
             this.txtLink.TabIndex = 3;
-            // 
-            // txtPass
-            // 
-            this.txtPass.Location = new System.Drawing.Point(179, 146);
-            this.txtPass.Name = "txtPass";
-            this.txtPass.Size = new System.Drawing.Size(100, 20);
-            this.txtPass.TabIndex = 4;
-            this.txtPass.Text = "a";
             // 
             // txtUsuario
             // 
@@ -186,10 +167,8 @@
             this.Controls.Add(this.btnDescargar);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.txtUsuario);
-            this.Controls.Add(this.txtPass);
             this.Controls.Add(this.txtLink);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -205,10 +184,8 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtLink;
-        private System.Windows.Forms.TextBox txtPass;
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.RadioButton radioMicrosoft;
         private System.Windows.Forms.RadioButton radioGoogle;
