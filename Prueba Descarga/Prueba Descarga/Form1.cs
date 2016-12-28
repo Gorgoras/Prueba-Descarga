@@ -17,6 +17,10 @@ using Google.Apis.Services;
 using System.Collections;
 using Google.Apis.Drive.v3.Data;
 using Prueba_Descarga.Helpers;
+using Microsoft.OneDrive.Sdk.Authentication;
+using Microsoft.OneDrive.Sdk;
+
+
 
 namespace Prueba_Descarga
 {
@@ -24,7 +28,9 @@ namespace Prueba_Descarga
     {
         private UserCredential userGoogle;
         private GoogleHelper google;
+
         private MicrosoftHelper microsoft;
+        private OneDriveClient userMicrosoft;
 
         public Form1()
         {
@@ -38,13 +44,19 @@ namespace Prueba_Descarga
         private async void btnDescargar_Click(object sender, EventArgs e)
         {
             lblDownloadStatus.Text = "Downloading...";
+            if (radioGoogle.Checked)
+            {
+                //dgvFiles
+                int nroFila = Int32.Parse(dgvFiles.SelectedRows[0].Index.ToString());
+                string fileId = dgvFiles.Rows[nroFila].Cells[1].Value.ToString();
+                string fileName = dgvFiles.Rows[nroFila].Cells[0].Value.ToString();
 
-            //dgvFiles
-            int nroFila = Int32.Parse(dgvFiles.SelectedRows[0].Index.ToString());
-            string fileId = dgvFiles.Rows[nroFila].Cells[1].Value.ToString();
-            string fileName = dgvFiles.Rows[nroFila].Cells[0].Value.ToString();
-
-            lblDownloadStatus.Text = await google.downloadFile(fileId, fileName, userGoogle);
+                lblDownloadStatus.Text = await google.downloadFile(fileId, fileName, userGoogle);
+            }
+            else
+            {
+                //logica para One Drive
+            }
         }
 
 
@@ -91,11 +103,12 @@ namespace Prueba_Descarga
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             string usuario = txtUsuario.Text;
             if (radioGoogle.Checked)
             {
+                //logica para logueo en Google Drive
                 userGoogle = google.loginToGoogleDriveAPI(usuario);
                 if (userGoogle != null)
                 {
@@ -113,26 +126,28 @@ namespace Prueba_Descarga
             }
             else
             {
-                //logica para One Drive
+                //logica para logueo en One Drive
+                userMicrosoft = await microsoft.loginToOneDriveAPICuentaBusiness(usuario);
+
             }
         }
 
         private void btnList_Click(object sender, EventArgs e)
         {
+            dgvFiles.AutoGenerateColumns = false;
+            dgvFiles.MultiSelect = false;
+            dgvFiles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
             if (radioGoogle.Checked)
             {
-                dgvFiles.AutoGenerateColumns = false;
-                dgvFiles.MultiSelect = false;
-                dgvFiles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
                 //Creo las columnas a mostrar
                 dgvFiles.Columns.Add("Name", "Name");
                 dgvFiles.Columns.Add("Id", "Id");
                 dgvFiles.Columns.Add("Kind", "Kind");
                 dgvFiles.Columns.Add("MimeType", "MimeType");
            
-                List<File> listaArchivos = google.GetFiles(userGoogle);
-                File archivoActual;
+                List<Google.Apis.Drive.v3.Data.File> listaArchivos = google.GetFiles(userGoogle);
+                Google.Apis.Drive.v3.Data.File archivoActual;
                 string[] fila;
                 
                 //Cargo las filas
@@ -146,6 +161,9 @@ namespace Prueba_Descarga
                 //Habilito boton descargar para que se pueda seleccionar un archivo de la lista y descargarlo
                 btnDescargar.Enabled = true;
                 
+            }else
+            {
+                //logica para One Drive
             }
         }
 

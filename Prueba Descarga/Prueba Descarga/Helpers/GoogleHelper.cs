@@ -99,68 +99,28 @@ namespace Prueba_Descarga.Helpers
 
             try
             {
-                PermissionList pList = service.Permissions.List(fileId).Execute();
+                // var pList = service.Permissions.List(fileId);
+                // pList.OauthToken = userGoogle.Token.AccessToken;
+                // var perm = pList.Execute();
+                // Permission perm = service.Permissions.Get(fileId, pList.Permissions[0].Id).Execute();
 
-                Permission perm = service.Permissions.Get(fileId, pList.Permissions[0].Id).Execute();
-
-                var fileStream = System.IO.File.Create("C:\\Pruebas\\" + fileName);
-
+                var fileStream = System.IO.File.Create("E:\\Pruebas\\" + fileName);
 
                 await service.Files.Get(fileId).DownloadAsync(fileStream);
 
                 respuesta = "Completo";
+
                 fileStream.Dispose();
                 fileStream.Close();
             }
-            catch  (GoogleApiException e) {
+            catch (GoogleApiException e)
+            {
                 respuesta = e.Message.ToString();
 
                 if (e.Error.Code == 403) respuesta = "No tiene permisos suficientes";
-             
             }
-
             return respuesta;
-
-
-
-            // ESTO PROBABLEMENTE NO SIRVA 
-            //
-            // string respuesta="";
-            // BaseClientService.Initializer init = new BaseClientService.Initializer();
-            // init.ApplicationName = "Prueba Descarga";
-            // init.HttpClientInitializer = userGoogle;
-            // DriveService service = new DriveService(init);
-
-
-            // var stream = new System.IO.MemoryStream();
-            // var request = service.Files.Get(fileId);
-            // var fileStream = System.IO.File.Create("C:\\Pruebas\\" + fileName);
-            // request.MediaDownloader.ProgressChanged +=
-            // (IDownloadProgress progress) =>
-            // {
-            //     switch (progress.Status)
-            //     {
-            //         case DownloadStatus.Downloading:
-            //             {
-            //                 Console.WriteLine(progress.BytesDownloaded);
-            //                 break;
-            //             }
-            //         case DownloadStatus.Completed:
-            //             {
-            //                 respuesta = "Download complete.";
-            //                 break;
-            //             }
-            //         case DownloadStatus.Failed:
-            //             {
-            //                 respuesta = "Download failed.";
-            //                 break;
-            //             }
-            //     }
-            // };
-            // request.DownloadAsync(stream);
-            // return respuesta;
-            //// stream.CopyTo(System.IO.File.Create("C:\\Pruebas\\test"));
         }
     }
-   
+
 }

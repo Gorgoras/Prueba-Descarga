@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtLink = new System.Windows.Forms.TextBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.radioMicrosoft = new System.Windows.Forms.RadioButton();
             this.radioGoogle = new System.Windows.Forms.RadioButton();
@@ -45,34 +43,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvFiles)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(278, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Link documento";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(278, 15);
+            this.label3.Location = new System.Drawing.Point(293, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Usuario";
             // 
-            // txtLink
-            // 
-            this.txtLink.Location = new System.Drawing.Point(368, 38);
-            this.txtLink.Name = "txtLink";
-            this.txtLink.Size = new System.Drawing.Size(355, 20);
-            this.txtLink.TabIndex = 3;
-            // 
             // txtUsuario
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(368, 12);
+            this.txtUsuario.Location = new System.Drawing.Point(383, 22);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(100, 20);
             this.txtUsuario.TabIndex = 5;
@@ -178,9 +160,7 @@
             this.Controls.Add(this.btnDescargar);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.txtUsuario);
-            this.Controls.Add(this.txtLink);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -193,10 +173,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtLink;
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.RadioButton radioMicrosoft;
         private System.Windows.Forms.RadioButton radioGoogle;

@@ -3,10 +3,92 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.OneDrive.Sdk;
+using Microsoft.OneDrive.Sdk.Authentication;
+using Microsoft.Graph;
 
 namespace Prueba_Descarga.Helpers
 {
     class MicrosoftHelper
     {
+        public async Task<OneDriveClient> loginToOneDriveAPICuentaComun(string usuario)
+        {
+            OneDriveClient credential = null;
+            string clientId = "21cbe2f1-86dd-4e67-9258-dfbfa2a6a41c";
+            string clientSecret = "dDV933Xq3y0UyUbKBzckgjf";
+            string returnUrl = "urn:ietf:wg:oauth:2.0:oob";
+            string[] scopes = { "onedrive.readwrite", "wl.signin" };
+
+
+            var msaAuthProvider = new MsaAuthenticationProvider(
+                clientId,
+                clientSecret,
+                returnUrl,
+                scopes,
+                null,
+                new CredentialVault(clientId));
+
+
+            credential = new OneDriveClient("https://api.onedrive.com/v1.0", msaAuthProvider);
+
+            Task authTask = msaAuthProvider.RestoreMostRecentFromCacheOrAuthenticateUserAsync();
+
+            try
+            {
+                await authTask;
+            }
+            catch (ServiceException exception)
+            {
+                if (OAuthConstants.ErrorCodes.AuthenticationFailure == exception.Error.Code)
+                {
+                    //problema de autenticacion
+                }
+                else
+                {
+                    //algo mas
+                }
+            }
+            return credential;
+        }
+
+        public async Task<OneDriveClient> loginToOneDriveAPICuentaBusiness(string usuario)
+        {
+            OneDriveClient credential = null;
+            string clientId = "21cbe2f1-86dd-4e67-9258-dfbfa2a6a41c";
+            string clientSecret = "dDV933Xq3y0UyUbKBzckgjf";
+            string returnUrl = "urn:ietf:wg:oauth:2.0:oob";
+            string[] scopes = { "onedrive.readwrite", "wl.signin" };
+
+
+            var msaAuthProvider = new MsaAuthenticationProvider(
+                clientId,
+                clientSecret,
+                returnUrl,
+                scopes,
+                null,
+                new CredentialVault(clientId));
+
+
+            credential = new OneDriveClient("https://api.onedrive.com/v1.0", msaAuthProvider);
+
+            Task authTask = msaAuthProvider.RestoreMostRecentFromCacheOrAuthenticateUserAsync();
+
+            try
+            {
+                await authTask;
+            }
+            catch (ServiceException exception)
+            {
+                if (OAuthConstants.ErrorCodes.AuthenticationFailure == exception.Error.Code)
+                {
+                    //problema de autenticacion
+                }
+                else
+                {
+                    //algo mas
+                }
+            }
+            return credential;
+        }
     }
 }
