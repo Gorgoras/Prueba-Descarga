@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.OneDrive.Sdk;
 using Microsoft.OneDrive.Sdk.Authentication;
 using Microsoft.Graph;
+using System.IO;
 
 namespace Prueba_Descarga.Helpers
 {
@@ -17,7 +18,7 @@ namespace Prueba_Descarga.Helpers
             string clientId = "21cbe2f1-86dd-4e67-9258-dfbfa2a6a41c";
             //string clientSecret = "dDV933Xq3y0UyUbKBzckgjf";
             string returnUrl = "https://login.live.com/oauth20_desktop.srf";
-            string[] scopes = { "onedrive.readwrite", "wl.signin", "offline_access" };
+            string[] scopes = { "onedrive.readwrite", "wl.signin", "wl.offline_access" };
 
 
             var msaAuthProvider = new MsaAuthenticationProvider(
@@ -42,10 +43,12 @@ namespace Prueba_Descarga.Helpers
                 if (OAuthConstants.ErrorCodes.AuthenticationFailure == exception.Error.Code)
                 {
                     //problema de autenticacion
+                    return null;
                 }
                 else
                 {
                     //algo mas
+                    return null;
                 }
             }
             return credential;
@@ -115,9 +118,29 @@ namespace Prueba_Descarga.Helpers
 
         public async Task<string> downloadFile(string fileId, string fileName, OneDriveClient usuario)
         {
+            string respuesta = "";
+            Stream stream = await usuario.Drive.Items[fileId].Content.Request().GetAsync();
 
+            var outputStream = new FileStream("E:\\Pruebas\\"+fileName, FileMode.Create);
 
-            return "";
+            try
+            {
+                await stream.CopyToAsync(outputStream);
+
+                //Sin lo que sigue no anda nada!! No olvidar
+                stream.Dispose();
+                stream.Close();
+                outputStream.Dispose();
+                outputStream.Close();
+                respuesta = "Completo";
+
+            }
+            catch(Exception e)
+            {
+                respuesta = "Ocurrio un error";
+            }
+
+            return respuesta;
         }
     }
 }

@@ -70,43 +70,6 @@ namespace Prueba_Descarga
 
 
 
-        private async void descargarGoogleDrive(string link, UserCredential user)
-        {
-            BaseClientService.Initializer init = new BaseClientService.Initializer();
-            init.ApplicationName = "Prueba Descarga";
-            init.HttpClientInitializer = userGoogle;
-            DriveService service = new DriveService(init);
-
-
-            var stream = new System.IO.MemoryStream();
-            var request = service.Files.Get(link);
-            var fileStream = System.IO.File.Create("E:\\Pruebas\\test");
-            request.MediaDownloader.ProgressChanged +=
-            (IDownloadProgress progress) =>
-            {
-                switch (progress.Status)
-                {
-                    case DownloadStatus.Downloading:
-                        {
-                            Console.WriteLine(progress.BytesDownloaded);
-                            break;
-                        }
-                    case DownloadStatus.Completed:
-                        {
-                            Console.WriteLine("Download complete.");
-                            break;
-                        }
-                    case DownloadStatus.Failed:
-                        {
-                            Console.WriteLine("Download failed.");
-                            break;
-                        }
-                }
-            };
-            await request.DownloadAsync(stream);
-            stream.CopyTo(System.IO.File.Create("E:\\Pruebas\\test"));
-        }
-
         private void descargarMicrosoftOneDrive()
         {
 
@@ -136,7 +99,7 @@ namespace Prueba_Descarga
             else
             {
                 //logica para logueo en One Drive
-                
+
                 userMicrosoft = await microsoft.loginToOneDriveAPICuentaComun(usuario);
                 if (userMicrosoft != null)
                 {
@@ -167,13 +130,13 @@ namespace Prueba_Descarga
                 dgvFiles.Columns.Add("Id", "Id");
                 dgvFiles.Columns.Add("Kind", "Kind");
                 dgvFiles.Columns.Add("MimeType", "MimeType");
-           
+
                 List<Google.Apis.Drive.v3.Data.File> listaArchivos = google.GetFiles(userGoogle);
                 Google.Apis.Drive.v3.Data.File archivoActual;
                 string[] fila;
-                
+
                 //Cargo las filas
-                for(int i = 0; i < listaArchivos.Count; i++)
+                for (int i = 0; i < listaArchivos.Count; i++)
                 {
                     archivoActual = listaArchivos.ElementAt(i);
                     fila = new string[] { archivoActual.Name, archivoActual.Id, archivoActual.Kind, archivoActual.MimeType };
@@ -182,8 +145,9 @@ namespace Prueba_Descarga
 
                 //Habilito boton descargar para que se pueda seleccionar un archivo de la lista y descargarlo
                 btnDescargar.Enabled = true;
-                
-            }else
+
+            }
+            else
             {
                 //Creo las columnas a mostrar
                 dgvFiles.Columns.Add("Name", "Name");
@@ -203,7 +167,7 @@ namespace Prueba_Descarga
                 for (int i = 0; i < listaArchivos.Count; i++)
                 {
                     archivoActual = listaArchivos.ElementAt(i);
-                    fila = new string[] { archivoActual.Name, archivoActual.Id, "Averiguar esto"};
+                    fila = new string[] { archivoActual.Name, archivoActual.Id, "Averiguar esto" };
                     dgvFiles.Rows.Add(fila);
                 }
 
