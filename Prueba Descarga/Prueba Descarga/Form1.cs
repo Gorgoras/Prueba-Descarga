@@ -56,6 +56,15 @@ namespace Prueba_Descarga
             else
             {
                 //logica para One Drive
+                int nroFila = Int32.Parse(dgvFiles.SelectedRows[0].Index.ToString());
+                string fileId = dgvFiles.Rows[nroFila].Cells[1].Value.ToString();
+                string fileName = dgvFiles.Rows[nroFila].Cells[0].Value.ToString();
+
+
+                lblDownloadStatus.Text = await microsoft.downloadFile(fileId, fileName, userMicrosoft);
+
+
+
             }
         }
 
@@ -127,12 +136,25 @@ namespace Prueba_Descarga
             else
             {
                 //logica para logueo en One Drive
-                userMicrosoft = await microsoft.loginToOneDriveAPICuentaBusiness(usuario);
-
+                
+                userMicrosoft = await microsoft.loginToOneDriveAPICuentaComun(usuario);
+                if (userMicrosoft != null)
+                {
+                    lblLoginSuccess.Text = "Exito!";
+                    lblLoginSuccess.ForeColor = Color.Green;
+                    btnList.Enabled = true;
+                    radioGoogle.Enabled = false;
+                    radioMicrosoft.Enabled = false;
+                }
+                else
+                {
+                    lblLoginSuccess.Text = "Fracaso =(";
+                    lblLoginSuccess.ForeColor = Color.Red;
+                }
             }
         }
 
-        private void btnList_Click(object sender, EventArgs e)
+        private async void btnList_Click(object sender, EventArgs e)
         {
             dgvFiles.AutoGenerateColumns = false;
             dgvFiles.MultiSelect = false;
@@ -163,7 +185,31 @@ namespace Prueba_Descarga
                 
             }else
             {
+                //Creo las columnas a mostrar
+                dgvFiles.Columns.Add("Name", "Name");
+                dgvFiles.Columns.Add("Id", "Id");
+                dgvFiles.Columns.Add("Kind", "Kind");
+
+
                 //logica para One Drive
+                List<Microsoft.OneDrive.Sdk.Item> listaArchivos = await microsoft.getFiles(userMicrosoft);
+
+
+
+                Microsoft.OneDrive.Sdk.Item archivoActual;
+                string[] fila;
+
+                //Cargo las filas
+                for (int i = 0; i < listaArchivos.Count; i++)
+                {
+                    archivoActual = listaArchivos.ElementAt(i);
+                    fila = new string[] { archivoActual.Name, archivoActual.Id, "Averiguar esto"};
+                    dgvFiles.Rows.Add(fila);
+                }
+
+                //Habilito boton descargar para que se pueda seleccionar un archivo de la lista y descargarlo
+                btnDescargar.Enabled = true;
+
             }
         }
 

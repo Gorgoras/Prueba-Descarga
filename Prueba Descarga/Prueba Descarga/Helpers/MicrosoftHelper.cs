@@ -15,17 +15,17 @@ namespace Prueba_Descarga.Helpers
         {
             OneDriveClient credential = null;
             string clientId = "21cbe2f1-86dd-4e67-9258-dfbfa2a6a41c";
-            string clientSecret = "dDV933Xq3y0UyUbKBzckgjf";
-            string returnUrl = "urn:ietf:wg:oauth:2.0:oob";
-            string[] scopes = { "onedrive.readwrite", "wl.signin" };
+            //string clientSecret = "dDV933Xq3y0UyUbKBzckgjf";
+            string returnUrl = "https://login.live.com/oauth20_desktop.srf";
+            string[] scopes = { "onedrive.readwrite", "wl.signin", "offline_access" };
 
 
             var msaAuthProvider = new MsaAuthenticationProvider(
                 clientId,
-                clientSecret,
+                //clientSecret,
                 returnUrl,
                 scopes,
-                null,
+                //null,
                 new CredentialVault(clientId));
 
 
@@ -89,6 +89,35 @@ namespace Prueba_Descarga.Helpers
                 }
             }
             return credential;
+        }
+
+        public async Task<List<Item>> getFiles(OneDriveClient usuario)
+        {
+            List<Item> listaArchivos = new List<Item>();
+
+            //primero traemos la carpeta
+            Item folder;
+            folder = await usuario.Drive.Root.Request().Expand("thumbnails,children").GetAsync();
+
+            //despues los archivos
+            if (folder.Folder != null && folder.Children != null && folder.Children.CurrentPage != null)
+            {
+                var items = folder.Children.CurrentPage;
+
+                foreach (Item obj in items)
+                {
+                    listaArchivos.Add(obj);
+                }
+            }
+            return listaArchivos;
+        }
+
+
+        public async Task<string> downloadFile(string fileId, string fileName, OneDriveClient usuario)
+        {
+
+
+            return "";
         }
     }
 }
