@@ -8,6 +8,8 @@ using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +53,10 @@ namespace Prueba_Descarga.Helpers
                 //Trae todos los archivos y carpetas del usuario, organizado en varias paginas.
                 FilesResource.ListRequest list = service.Files.List();
 
+
+                list.Corpus = FilesResource.ListRequest.CorpusEnum.Domain;
+
+
                 FileList filesFeed = list.Execute(); //trae 100 archivos (el tamaño estandar de una pagina de archivos)
                 File archivoActual;
 
@@ -60,8 +66,10 @@ namespace Prueba_Descarga.Helpers
                     for (int i = 0; i < filesFeed.Files.Count; i++) //paso cada archivo a la lista
                     {
                         archivoActual = filesFeed.Files.ElementAt<File>(i);
-                        Files.Add(archivoActual);
-
+                        if (!archivoActual.MimeType.StartsWith("application/vnd.google"))
+                        {
+                            Files.Add(archivoActual);
+                        }
                     }
 
                     /*  Para acelerar la carga de los archivos, voy a trabajar con los 100 primeros

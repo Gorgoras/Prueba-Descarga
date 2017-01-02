@@ -122,13 +122,13 @@ namespace Prueba_Descarga
             dgvFiles.AutoGenerateColumns = false;
             dgvFiles.MultiSelect = false;
             dgvFiles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            lblGetList.Text = "Reading...";
 
             if (radioGoogle.Checked)
             {
                 //Creo las columnas a mostrar
                 dgvFiles.Columns.Add("Name", "Name");
                 dgvFiles.Columns.Add("Id", "Id");
-                dgvFiles.Columns.Add("Kind", "Kind");
                 dgvFiles.Columns.Add("MimeType", "MimeType");
 
                 List<Google.Apis.Drive.v3.Data.File> listaArchivos = google.GetFiles(userGoogle);
@@ -139,12 +139,13 @@ namespace Prueba_Descarga
                 for (int i = 0; i < listaArchivos.Count; i++)
                 {
                     archivoActual = listaArchivos.ElementAt(i);
-                    fila = new string[] { archivoActual.Name, archivoActual.Id, archivoActual.Kind, archivoActual.MimeType };
+                    fila = new string[] { archivoActual.Name, archivoActual.Id, archivoActual.MimeType };
                     dgvFiles.Rows.Add(fila);
                 }
 
                 //Habilito boton descargar para que se pueda seleccionar un archivo de la lista y descargarlo
                 btnDescargar.Enabled = true;
+                lblGetList.Text = "Done";
 
             }
             else
@@ -173,7 +174,7 @@ namespace Prueba_Descarga
 
                 //Habilito boton descargar para que se pueda seleccionar un archivo de la lista y descargarlo
                 btnDescargar.Enabled = true;
-
+                lblGetList.Text = "Done";
             }
         }
 

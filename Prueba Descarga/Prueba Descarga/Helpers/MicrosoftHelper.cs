@@ -137,6 +137,7 @@ namespace Prueba_Descarga.Helpers
             }
             catch(Exception e)
             {
+                e.Message.ToString();
                 respuesta = "Ocurrio un error";
             }
 
