@@ -1,6 +1,5 @@
 ﻿using Google;
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.Download;
 using Google.Apis.Drive.v3;
 using Google.Apis.Drive.v3.Data;
 using Google.Apis.Services;
@@ -8,8 +7,6 @@ using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
