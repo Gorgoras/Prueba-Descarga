@@ -178,8 +178,14 @@ namespace Prueba_Descarga.Helpers
 
         private void guardarCredentialCacheBlob(byte[] refresh, string usuario)
         {
-            string path = @"e:\Pruebas\"+ $"{usuario}.txt";
-            System.IO.File.WriteAllBytes(path, refresh);
+             string path = @"e:\Pruebas\"+ $"{usuario}.txt";
+             try
+             {
+                 System.IO.File.WriteAllBytes(path, refresh);
+             }
+             catch { }
+
+            //EncryptionHelper.saveEncrypted(refresh, usuario);
         }
 
         private byte[] cargarCredentialCacheBlob(string usuario)
@@ -203,6 +209,7 @@ namespace Prueba_Descarga.Helpers
             }
 
             return readText;
+            //return EncryptionHelper.loadEncrypted(usuario);
         }
     }
 }

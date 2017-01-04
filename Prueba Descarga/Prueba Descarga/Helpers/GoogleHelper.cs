@@ -67,15 +67,15 @@ namespace Prueba_Descarga.Helpers
 
 
                 list.Corpus = FilesResource.ListRequest.CorpusEnum.Domain;
+                list.PageSize = 150; //Archivos a traer por pagina, por defecto 100.
 
-
-                FileList filesFeed = list.Execute(); //trae 100 archivos (el tamaño estandar de una pagina de archivos)
+                FileList filesFeed = list.Execute(); //trae una pagina de archivos
                 File archivoActual;
 
 
                 while (filesFeed != null)
                 {
-                    for (int i = 0; i < filesFeed.Files.Count; i++) //paso cada archivo a la lista
+                    for (int i = 0; i < filesFeed.Files.Count; i++) //paso cada archivo de la pagina actual a la lista
                     {
                         archivoActual = filesFeed.Files.ElementAt<File>(i);
                         
@@ -91,12 +91,10 @@ namespace Prueba_Descarga.Helpers
                      *  nada mas, descomentar lo que esta abajo y eliminar el break al final para 
                      *  traer todos los archivos. 
                      * 
-                     * 
                     if (filesFeed.NextPageToken == null) //si ya no hay mas paginas siguientes, corto el while
                     {
                         break;
                     }
-
 
                     list.PageToken = filesFeed.NextPageToken; //cambiamos el page token a la pagina que sigue
                     filesFeed = list.Execute(); //trae los archivos que estan en la pagina indicada anteriormente

@@ -112,6 +112,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EncryptionHelper.cs" />
     <Compile Include="Helpers\GoogleHelper.cs" />
     <Compile Include="Helpers\MicrosoftHelper.cs" />
     <Compile Include="Program.cs" />
