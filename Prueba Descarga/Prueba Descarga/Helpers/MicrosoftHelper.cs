@@ -21,21 +21,28 @@ namespace Prueba_Descarga.Helpers
             MsaAuthenticationProvider msaAuthProvider;
 
             CredentialCache cred = new CredentialCache();
-            byte[] credBlob = cargarCredentialCacheBlob();
+            byte[] credBlob = null;
             cred.InitializeCacheFromBlob(credBlob);
 
+            try
+            {   //intento leer el archivo y armar el credential cache con eso
+                credBlob = cargarCredentialCacheBlob(usuario);
+                cred.InitializeCacheFromBlob(credBlob);
+            }
+            catch { }
+
+
             if (credBlob != null)
-            {
+            {   //inicio de sesion con credentialCache, no pide permisos
                 msaAuthProvider = new MsaAuthenticationProvider(
                     clientId, clientSecret, returnUrl, scopes, cred, new CredentialVault(clientId));
             }
             else
-            {
+            {   //inicio de sesion comun
                 msaAuthProvider = new MsaAuthenticationProvider(
                     clientId, returnUrl, scopes, new CredentialVault(clientId));
             }
-
-
+            
 
             try
             {
@@ -69,8 +76,7 @@ namespace Prueba_Descarga.Helpers
             if (msaAuthProvider.IsAuthenticated)
             {
                 credential = new OneDriveClient("https://api.onedrive.com/v1.0", msaAuthProvider);
-                guardarCredentialCacheBlob(msaAuthProvider.CredentialCache.GetCacheBlob());
-
+                guardarCredentialCacheBlob(msaAuthProvider.CredentialCache.GetCacheBlob(), usuario);
             }
             else
             {
@@ -170,17 +176,15 @@ namespace Prueba_Descarga.Helpers
             return respuesta;
         }
 
-        private void guardarCredentialCacheBlob(byte[] refresh)
+        private void guardarCredentialCacheBlob(byte[] refresh, string usuario)
         {
-            string path = @"e:\Pruebas\MyTest.txt";
-
+            string path = @"e:\Pruebas\"+ $"{usuario}.txt";
             System.IO.File.WriteAllBytes(path, refresh);
-
         }
 
-        private byte[] cargarCredentialCacheBlob()
+        private byte[] cargarCredentialCacheBlob(string usuario)
         {
-            string path = @"e:\Pruebas\MyTest.txt";
+            string path = @"e:\Pruebas\" + $"{usuario}.txt";
             byte[] readText = null;
 
             try
@@ -192,10 +196,12 @@ namespace Prueba_Descarga.Helpers
                 e.ToString();
             }
 
+            // Band aid para cuando lee pero no encuentra el archivo :p
             if (readText.Length < 2)
             {
                 return null;
             }
+
             return readText;
         }
     }

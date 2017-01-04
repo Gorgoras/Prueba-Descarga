@@ -19,9 +19,22 @@ namespace Prueba_Descarga.Helpers
             //Scopes for use with the Google Drive API
             string[] scopes = new string[] { DriveService.Scope.Drive,
                                  DriveService.Scope.DriveFile};
+
+            //Estos 2 te los dan al registrar la app en la pagina de google.
             var clientId = "958470112648-f26et699num6vs6ma1d7iha8gjpofngl.apps.googleusercontent.com";      // From https://console.developers.google.com
             var clientSecret = "cTq0zQ309fG_6O5MU-eSJKl9";          // From https://console.developers.google.com
                                                                     // here is where we Request the user to give us access, or use the Refresh Token that was previously stored in %AppData%
+
+            FileDataStore fds = new FileDataStore(@"e:\Pruebas\" + $"{usuario}", true);
+            /*Ejemplo de ruta personalizada para cada usuario, para algo mas generico usar la definicion
+             de abajo.*/
+
+
+            //FileDataStore fds = new FileDataStore("PruebaDescarga.GoogleDrive.Auth.Store" + $"{usuario}", false);
+            /*con esto guarda los tokens en AppData/Roaming pero no es recomendable para una
+            aplicacion web, al crear FileDataStore se puede especificar la ruta poniendo
+            el segundo parametro en true.*/
+
             var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
             {
                 ClientId = clientId,
@@ -30,10 +43,12 @@ namespace Prueba_Descarga.Helpers
             scopes,
             usuario,
             CancellationToken.None,
-            new FileDataStore("PruebaDescarga.GoogleDrive.Auth.Store")).Result;
-            //con esto guarda los tokens en %AppData% pero no es recomendable para una aplicacion web
+            fds).Result;
+            /*con esto guarda los tokens en AppData/Roaming pero no es recomendable para una
+            aplicacion web, al crear FileDataStore se puede especificar la ruta poniendo
+            el segundo parametro en true.*/
+
             return credential;
-            //Environment.UserName
         }
 
         public List<File> GetFiles(UserCredential userCred)
@@ -63,6 +78,9 @@ namespace Prueba_Descarga.Helpers
                     for (int i = 0; i < filesFeed.Files.Count; i++) //paso cada archivo a la lista
                     {
                         archivoActual = filesFeed.Files.ElementAt<File>(i);
+                        
+                        /*no muestro los archivos creados con google docs porque no se pueden
+                        descargar con la api*/
                         if (!archivoActual.MimeType.StartsWith("application/vnd.google"))
                         {
                             Files.Add(archivoActual);
@@ -104,11 +122,6 @@ namespace Prueba_Descarga.Helpers
 
             try
             {
-                // var pList = service.Permissions.List(fileId);
-                // pList.OauthToken = userGoogle.Token.AccessToken;
-                // var perm = pList.Execute();
-                // Permission perm = service.Permissions.Get(fileId, pList.Permissions[0].Id).Execute();
-
                 var fileStream = System.IO.File.Create("E:\\Pruebas\\" + fileName);
 
                 await service.Files.Get(fileId).DownloadAsync(fileStream);
